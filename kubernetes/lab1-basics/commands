@@ -1,0 +1,31 @@
+Para acceder al cluster de k8s desde mi PC local:
+se debe configurar el OCI CLI, editando el arhcivo .oci/config
+luego ejecutar el comando que se muestra en la consola de OCI: oci ce cluster ...
+
+Crear previamente un cluster de kubernetes en OCI
+Obtener el archivo de configuracion del cluster: .kube/config
+
+mostrar informacion de los worker nodes
+$ kubectl get nodes -o wide
+
+crear un namespace (subcluster)
+$ kubectl apply -f 00-namespace.yaml
+$ kubectl get ns
+
+crear un servicio NodePort
+(forma de acceder a los contenedores, puerto del worker node que apunta a un puerto del contenedor)
+$ kubectl -n testing apply -f 01-wordpress-service.yaml
+$ kubectl -n testing get svc
+
+crear un ReplicationController
+(replicas de contenedores basados en un imagen docker, estas replicas estaran distribuidas en los worker nodes)
+$ kubectl -n testing apply -f 02-wordpress-rc.yaml
+$ kubectl -n testing get pods
+
+mostrar las ips publicas de los workers
+$ kubectl get nodes -o wide
+
+en el browser
+150.136.9.232:30000
+
+debe aparecer la pantalla de workpress
