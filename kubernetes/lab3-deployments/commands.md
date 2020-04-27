@@ -1,12 +1,12 @@
-__Deployment de una aplicacion en OkE a partir de una imagen docker en OCIR__
+__Deployment de una aplicación en OKE a partir de una imagen docker en OCIR__
 https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-and-registry/index.html
 
 ---------
-previamente se debio subir una imagen el OCIR
-datos necesarios:
-	OCI account: okepro1
-	object storage namespace: idtu5rnw5dhj
-	user: junior.palomino@oracle.com
+previamente se debio subir una imagen el OCIR<br/>
+datos necesarios:<br/>
+	OCI account: okepro1<br/>
+	object storage namespace: idtu5rnw5dhj<br/>
+	user: junior.palomino@oracle.com<br/>
 	auth token: GRSt;>xF<rnZnPqxP{9K
 ```sh
 $ docker login iad.ocir.io
@@ -34,7 +34,7 @@ realizar el deployment de una aplicacion (en el archivo yaml, se especifica el s
 $ kubectl -n lab3 apply -f 01-apache-app.yaml
 ```
 
-obs: apply -f solo ejecuta cambios de configuracion, no de la propia imagen de docker
+obs: apply -f solo ejecuta cambios de configuracion, no de la propia imagen de docker<br/>
 Para actualizar la imagen de docker se debe ejecutar el siguiente comando:
 ```sh
 $ kubectl -n lab3 set image deployment/httpd-k8s-deployment httpd-k8s-app=iad.ocir.io/idtu5rnw5dhj/httpd-k8s:v2 --record
@@ -44,8 +44,10 @@ Fuente: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#up
 
 
 
-----Aux---
-Como crear una nueva imagen a partir de la original httpd:latest
+
+
+-------
+Como crear una nueva imagen a partir de la original httpd:latest<br/>
 realizar un pull de la imagen en la PC local
 ```sh
 $ docker pull httpd
