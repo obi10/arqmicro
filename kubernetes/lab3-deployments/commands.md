@@ -2,44 +2,44 @@ __Deployment de una aplicación en OKE a partir de una imagen docker en OCIR__
 https://www.oracle.com/webfolder/technetwork/tutorials/obe/oci/oke-and-registry/index.html
 
 ---------
-previamente se debio subir una imagen el OCIR<br/>
-datos necesarios:<br/>
-	OCI account: okepro1<br/>
-	object storage namespace: idtu5rnw5dhj<br/>
-	user: junior.palomino@oracle.com<br/>
-	auth token: GRSt;>xF<rnZnPqxP{9K
+Previamente se debio subir una imagen al OCIR.<br/>
+Datos necesarios:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;OCI account: okepro1<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;object storage namespace: idtu5rnw5dhj<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;user: junior.palomino@oracle.com<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;auth token: GRSt;>xF<rnZnPqxP{9K
 ```sh
 $ docker login iad.ocir.io
 username: idtu5rnw5dhj/junior.palomino@oracle.com
 password: GRSt;>xF<rnZnPqxP{9K
 
-$ docker push iad.ocir.io/idtu5rnw5dhj/httpd-k8s:v1 (respetar esa estructura del nombre de la image - tag)
+$ docker push iad.ocir.io/idtu5rnw5dhj/httpd-k8s:v1 (respetar esa estructura del nombre de la imagen - tag)
 ```
 ---------
 
 
 
-crear otro namespace (exlusivo para este lab - lab3)
+Crear otro namespace (exlusivo para este lab - lab3).
 ```sh
 $ kubectl apply -f 00-namespace.yaml
 ```
 
-crear un secret. A Kubernetes cluster uses the Secret of docker-registry type to authenticate with a container registry to pull a private image.
+Crear un secret. A Kubernetes cluster uses the Secret of docker-registry type to authenticate with a container registry to pull a private image.
 https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 ```sh
 $ kubectl -n lab3 create secret docker-registry ocirsecret --docker-server=iad.ocir.io --docker-username='idtu5rnw5dhj/junior.palomino@oracle.com' --docker-password='GRSt;>xF<rnZnPqxP{9K' --docker-email='junior.palomino@oracle.com'
 ```
-realizar el deployment de una aplicacion (en el archivo yaml, se especifica el servicio de lb y el deployment)
+Realizar el deployment de una aplicacion (en el archivo yaml, se especifica el servicio de lb y el deployment)
 ```sh
 $ kubectl -n lab3 apply -f 01-apache-app.yaml
 ```
 
-obs: apply -f solo ejecuta cambios de configuracion, no de la propia imagen de docker<br/>
+Obs: apply -f solo ejecuta cambios de configuracion, no de la propia imagen de docker<br/>
 Para actualizar la imagen de docker se debe ejecutar el siguiente comando:
 ```sh
 $ kubectl -n lab3 set image deployment/httpd-k8s-deployment httpd-k8s-app=iad.ocir.io/idtu5rnw5dhj/httpd-k8s:v2 --record
 ```
-La imagen iad.ocir.io/idtu5rnw5dhj/httpd-k8s:v2 debe estar en el OCIR
+La imagen iad.ocir.io/idtu5rnw5dhj/httpd-k8s:v2 debe estar en el OCIR.<br/>
 Fuente: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#updating-a-deployment
 
 
@@ -48,8 +48,8 @@ Fuente: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#up
 
 -------
 Como crear una nueva imagen a partir de la original httpd:latest<br/>
-realizar un pull de la imagen en la PC local
 ```sh
+realizar un pull de la imagen en la PC local
 $ docker pull httpd
 $ docker run -it -d --name apache httpd:latest bash
 
