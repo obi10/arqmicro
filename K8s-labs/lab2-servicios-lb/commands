@@ -1,0 +1,31 @@
+NodePort: mala idea, apunta a las ips publicas de los workers
+los workers son ganado, son descartables (al igual que los pods) -> es recomendable usar LoadBalancer
+sus ips pueden cambiar
+
+--previamente eliminar el servicio de NodePort
+
+crear un servicio
+(ip-cluster: el servicio solo puede ser accedido dentro del cluster)
+(no se puede acceder desde los nodos, pero si desde otros pods)
+(pods del backend pueden apuntar a ese ip-cluster y llegar a los pods con el rol de wordpress)
+(tambien los pods del backend pueden apuntar al nombre wordpress, y en dns de kubernetes resuelve el servicio)
+$ kubectl -n testing apply -f 01-wordpress-service.yaml
+$ kubectl -n testing get svc
+
+crear un servicio NodePort (pods pueden ser accedidos desde los worker nodes)
+$ kubectl -n testing apply -f 02-wordpress-service-node-port.yaml
+
+crear un servicio LoadBalancer
+(workers detras del loadbalancer)
+$ kubectl -n testing apply -f 03-wordpress-service-lb.yaml
+
+
+en el browser
+193.122.135.50
+
+
+
+Si se eliminan las instancias de computo (worker nodes),
+la metadata esta guardada en el etcd (base de datos de los controladores) en los master nodes
+los nuevos nodos cambian de ip, pero el load balancer sigue apuntando a los pods con rol wordpress
+
